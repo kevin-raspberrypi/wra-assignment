@@ -1,0 +1,10 @@
+D:\MyData\Courses\WRA2\2013\WRA202\Tests\2013-10-11\For Network\Ques1\Ques1\bin\Debug\Ques1.exe
+D:\MyData\Courses\WRA2\2013\WRA202\Tests\2013-10-11\For Network\Ques1\Ques1\bin\Debug\Ques1.pdb
+D:\MyData\Courses\WRA2\2013\WRA202\Tests\2013-10-11\For Network\Ques1\Ques1\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\MyData\Courses\WRA2\2013\WRA202\Tests\2013-10-11\For Network\Ques1\Ques1\obj\x86\Debug\Ques1.exe
+D:\MyData\Courses\WRA2\2013\WRA202\Tests\2013-10-11\For Network\Ques1\Ques1\obj\x86\Debug\Ques1.pdb
+C:\Users\frioct-36\Documents\TEST\Ques1\Ques1\obj\x86\Debug\Ques1.exe
+C:\Users\frioct-36\Documents\TEST\Ques1\Ques1\obj\x86\Debug\Ques1.pdb
+C:\Users\frioct-36\Documents\TEST\Ques1\Ques1\bin\Debug\Ques1.exe
+C:\Users\frioct-36\Documents\TEST\Ques1\Ques1\bin\Debug\Ques1.pdb
+C:\Users\frioct-36\Documents\TEST\Ques1\Ques1\obj\x86\Debug\ResolveAssemblyReference.cache
