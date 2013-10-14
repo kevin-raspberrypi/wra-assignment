@@ -33,20 +33,24 @@ namespace Ques1
          *       Wherever possible, use MUST be made of existing methods. */
         {
             // ADD CODE FOR METHOD allocateMemory BELOW
-			//if the memory block is in use
-			if (MemBlock.inUse ()) {
-				//if the used list is empty, just add it
-				if (Used.Count () == 0)
-					Used.addFirst (MemBlock);
-				//if the used list contains already allocated blocks, add MemBlock in order of identifier
-				else {
-					DLLNode cur = Used.getFirst ();
-					while (cur != null) {
-						if (((Block)cur.value ()).MemID > MemBlock.MemID)
-							Used.addBefore (MemBlock, cur);
-						cur = (DLLNode)cur.next ();
+			//if the used list is empty, just add it
+			if (Used.Count () == 0)
+				Used.addFirst (MemBlock);
+			//if the used list contains already allocated blocks, add MemBlock in order of identifier
+			else {
+				//get the first block
+				DLLNode cur = Used.getFirst ();
+				//traverse the list and check where to add the block
+				do {
+					//when the id of the current block is bigger than the one to be inserted, 
+					//add it before the current block.
+					if (((Block)cur.value ()).CompareTo(MemBlock) >= 0) {
+						Used.addBefore (MemBlock, cur);
+						return; // break out the loop and stop, otherwise we are wasting time
 					}
-				}
+					cur = (DLLNode)cur.next ();
+				} while (cur != null);
+				Used.addLast (MemBlock); //if the whole list has been traversed, add the block at the end.
 			}
         }
 
@@ -60,6 +64,25 @@ namespace Ques1
          *       NOTE: you are required to make use of method decCounter in class DoublyLinkedList appropriately.  */
         {
             // ADD CODE FOR METHOD garbageCollect BELOW
+			for (int i = 0; i < Used.Count(); i++) {
+				Block cur = (Block)Used.removeFirst().value();
+				if (cur.inUse ())
+					Used.addLast (cur);
+				else {
+					if (Free.Count () == 0)
+						Free.addLast (cur);
+					else {
+						Node curNode = Free.getFirst ();
+						do {
+							if (((Block)curNode.value()).CompareTo(cur) <= 0) {
+								Free.addBefore(cur,curNode);
+								break;
+							}
+							curNode = curNode.next();
+						} while (curNode != null);
+					}
+				}
+			}
         }
 
         public Node findMemory(int Size) // 10 marks
