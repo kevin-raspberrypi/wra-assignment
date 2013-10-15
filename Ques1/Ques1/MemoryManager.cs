@@ -122,10 +122,19 @@ namespace Ques1
          *       The list of available (Free) memory blocks should retain its ordering.
          *       Wherever possible, use MUST be made of existing methods. */
         {
-
             // ADD CODE FOR METHOD findMemory BELOW
+			Node cur = Free.getFirst(), prev = null;
+			do {
+				//if the current block is smaller that the given size, then the previous block must be big enough...simple as that!
+				if (((Block)cur.value()).Size < Size)
+					return prev;
+				prev = cur;
+				cur = cur.next();
+			} while (cur != null);
+			//if we got to the end, just make sure that the last block is big enough
+			if (cur == null && ((Block)prev.value ()).Size > Size)
+				return prev;
             return null;
-
         }
 
         public double findWastage()  // 20 marks
