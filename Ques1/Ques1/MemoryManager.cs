@@ -64,23 +64,39 @@ namespace Ques1
          *       NOTE: you are required to make use of method decCounter in class DoublyLinkedList appropriately.  */
         {
             // ADD CODE FOR METHOD garbageCollect BELOW
-			for (int i = 0; i < Used.Count(); i++) {
-				Block cur = (Block)Used.removeFirst().value();
-				if (cur.inUse ())
-					Used.addLast (cur);
-				else {
+			DLLNode cur = Used.getFirst ();
+			while (cur != null) {
+				Block curBlock = (Block)cur.value ();
+				if (!curBlock.inUse ()) {
+					//add to free memory
 					if (Free.Count () == 0)
-						Free.addLast (cur);
+						Free.addLast (curBlock);
 					else {
-						Node curNode = Free.getFirst ();
-						do {
-							if (((Block)curNode.value()).CompareTo(cur) <= 0) {
-								Free.addBefore(cur,curNode);
+						Node curFree = Free.getFirst ();
+						while (curFree != null) {
+							if (curBlock.Size > ((Block)curFree.value()).Size) {
+								Free.addBefore (curBlock, curFree);
 								break;
 							}
-							curNode = curNode.next();
-						} while (curNode != null);
+							curFree = curFree.next ();
+						}
 					}
+					/*DLLNode prev, next;
+					if (cur.next () == null)
+						next = null;
+					else
+						next = (DLLNode)cur.next ();
+					if (cur.previous () == null)
+						prev = null;
+					else
+						prev = cur.previous ();
+					prev.setNext (next);
+					next.setPrevious (prev);
+					cur.setNext (null);
+					cur.setPrevious (null);
+					Used.decCounter (); //make sure to decrease the amount of used memory
+					cur = next;*/
+					cur = (DLLNode)cur.next ();
 				}
 			}
         }
