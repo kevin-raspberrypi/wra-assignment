@@ -64,7 +64,7 @@ namespace Ques1
          *       NOTE: you are required to make use of method decCounter in class DoublyLinkedList appropriately.  */
         {
             // ADD CODE FOR METHOD garbageCollect BELOW
-			DLLNode cur = Used.getFirst ();
+			DLLNode cur = Used.getFirst (), prev, next;
 			while (cur != null) {
 				Block curBlock = (Block)cur.value ();
 				if (!curBlock.inUse ()) {
@@ -73,31 +73,43 @@ namespace Ques1
 						Free.addLast (curBlock);
 					else {
 						Node curFree = Free.getFirst ();
-						while (curFree != null) {
-							if (curBlock.Size > ((Block)curFree.value()).Size) {
+						bool notadded = true; //need to keep track so we can stop iterating if added
+						do {
+							if (curBlock.Size >= ((Block)curFree.value ()).Size) {
 								Free.addBefore (curBlock, curFree);
-								break;
+								notadded = false;
 							}
 							curFree = curFree.next ();
-						}
+							//if we reach the end of the list and it hasn't been added, add it to the end
+							if (curFree == null && notadded)
+								Free.addLast (curBlock);
+						} while (curFree != null && notadded);
 					}
-					/*DLLNode prev, next;
-					if (cur.next () == null)
-						next = null;
-					else
-						next = (DLLNode)cur.next ();
-					if (cur.previous () == null)
-						prev = null;
-					else
-						prev = cur.previous ();
-					prev.setNext (next);
-					next.setPrevious (prev);
-					cur.setNext (null);
+					//Some serious thinking went on here...
+					//get the previous, and next nodes of the current node
+					prev = cur.previous ();
+					next = (DLLNode)cur.next ();
+					//if we are at the first node currently, then previous will be null and must be dealt with accordingly
+					if (prev == null)
+						Used.removeFirst ();
+					//if are at the end of the list, we neet to do something similar
+					else if (next == null)
+						Used.removeLast ();
+					else { //otherwise we need to move some pointers around and shit starts to get complicated!
+						prev.setNext (next);
+						next.setPrevious (prev);
+					}
+					//remove the links to any other nodes from the current item in Used. Maybe it'll go away if we ignore it
 					cur.setPrevious (null);
-					Used.decCounter (); //make sure to decrease the amount of used memory
-					cur = next;*/
+					cur.setNext (null);
+					//tell the program where the next item is...otherwise it'll eat up all your memory and get diabetes and fall apart!
+					cur = next;
+					//and DON'T forget to decrease the counter for how many used memory blocks there are...
+					Used.decCounter ();
+				} else if (cur.next () != null)
 					cur = (DLLNode)cur.next ();
-				}
+				else
+					cur = null;
 			}
         }
 
