@@ -85,7 +85,7 @@ namespace Ques1
 								Free.addLast (curBlock);
 						} while (curFree != null && notadded);
 					}
-					//Some serious thinking went on here...
+					//Some serious thinking went on here...This cleans up the Used list to remove the node the moved to free
 					//get the previous, and next nodes of the current node
 					prev = cur.previous ();
 					next = (DLLNode)cur.next ();
@@ -98,14 +98,14 @@ namespace Ques1
 					else { //otherwise we need to move some pointers around and shit starts to get complicated!
 						prev.setNext (next);
 						next.setPrevious (prev);
+						//and DON'T forget to decrease the counter for how many used memory blocks there are...
+						Used.decCounter ();
 					}
 					//remove the links to any other nodes from the current item in Used. Maybe it'll go away if we ignore it
 					cur.setPrevious (null);
 					cur.setNext (null);
 					//tell the program where the next item is...otherwise it'll eat up all your memory and get diabetes and fall apart!
 					cur = next;
-					//and DON'T forget to decrease the counter for how many used memory blocks there are...
-					Used.decCounter ();
 				} else if (cur.next () != null)
 					cur = (DLLNode)cur.next ();
 				else
@@ -149,11 +149,57 @@ namespace Ques1
          *             Make appropriate use of method getNextMemoryBlock (which must also be coded). 
          *             The contents of the lists do not have to be retained. */
         {
-
             // ADD CODE FOR METHOD findWastage BELOW
-            return 0;
-
+			sortFree ();
+			Block free = getNext (Free), corrupt = getNext (Corrupt);
+			Queue notWasted = new Queue ();
+			double wasted = 0;
+			int sizeFree = 0;
+			while (free != null && corrupt != null) {
+				if (free.CompareTo (corrupt) > 0) {
+					notWasted.Enqueue (free);
+					sizeFree += free.Size;
+					free = getNext (Free);
+				} else if (corrupt.CompareTo (free) > 0) {
+					wasted += corrupt.Size;
+					corrupt = getNext (Corrupt);
+				} else {
+					Console.WriteLine ("same {0}", free.MemID);
+					sizeFree += free.Size;
+					wasted += corrupt.Size;
+					free = getNext(Free);
+					corrupt = getNext (Corrupt);
+				}
+			}
+			while (corrupt != null && free == null) {
+				wasted += corrupt.Size;
+				corrupt = getNext (Corrupt);
+			}
+			while (free != null && corrupt == null) {
+				notWasted.Enqueue (free);
+				sizeFree += free.Size;
+				free = getNext (Free);
+			}
+			while (notWasted.Count > 0)
+				Console.WriteLine (((Block)notWasted.Dequeue()).MemID);
+            return wasted/sizeFree;
         }
+
+		private Block getNext(Object List)
+		{
+			if (List is SinglyLinkedList)
+				if (((SinglyLinkedList)List).Count () == 0)
+					return null;
+				else
+					return (Block)((SinglyLinkedList)List).removeFirst ().value ();
+			else if (List is Stack)
+				if (((Stack)List).Count == 0)
+					return null;
+				else
+					return (Block)((Stack)List).Pop ();
+			else
+				return null;
+		}
 
 
         // DO NOT MODIFY ANY OF THE METHODS BELOW
