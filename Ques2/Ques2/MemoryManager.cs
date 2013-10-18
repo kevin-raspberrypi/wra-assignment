@@ -29,13 +29,35 @@ namespace Ques2
          *       If there is no appropriately sized memory block, return null.
          *       The list of available (Free) memory blocks should retain its ordering.
          *       Wherever possible, use MUST be made of existing methods. */
-        {
+		{
+			// ADD CODE FOR METHOD findMemory BELOW 
+			Block mem = getSmallestBlock (Free, Size, new Block (-1, 9999999, false));
+			if (Free == null || mem.MemID == -1)
+				return null;
+			else
+				return mem;
+		}
 
-            // ADD CODE FOR METHOD findMemory BELOW 
-            return null;
- 
-        }
+		private Block getSmallestBlock(BTNode T,int Size, Block min)
+		{
+			if (T == null)
+				return new Block(-1,9999999,false);
 
+			Block minLeft = getSmallestBlock(T.left(), Size, min);
+			Block minRight = getSmallestBlock(T.right(), Size, min);
+
+			if ((minLeft.Size < minRight.Size)&&(minLeft.Size > Size))
+				min = minLeft;
+			else if (minRight.Size > Size)
+				min = minRight;
+
+			Block curBlock = (Block)T.value();
+
+			if ((curBlock.Size > Size)&&(min.Size > curBlock.Size))
+				min = curBlock;
+
+			return min;
+		}
 
         // DO NOT MODIFY ANY METHODS BELOW
 
