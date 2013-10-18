@@ -156,15 +156,14 @@ namespace Ques1
 			double wasted = 0;
 			int sizeFree = 0;
 			while (free != null && corrupt != null) {
-				if (free.CompareTo (corrupt) > 0) {
+				if (free.CompareTo (corrupt) < 0) {
 					notWasted.Enqueue (free);
 					sizeFree += free.Size;
 					free = getNext (Free);
-				} else if (corrupt.CompareTo (free) > 0) {
+				} else if (corrupt.CompareTo (free) < 0) {
 					wasted += corrupt.Size;
 					corrupt = getNext (Corrupt);
 				} else {
-					Console.WriteLine ("same {0}", free.MemID);
 					sizeFree += free.Size;
 					wasted += corrupt.Size;
 					free = getNext(Free);
